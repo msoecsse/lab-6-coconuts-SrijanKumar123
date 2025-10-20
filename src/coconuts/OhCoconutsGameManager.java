@@ -6,9 +6,12 @@ import javafx.scene.layout.Pane;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.ArrayList;
+
 
 // This class manages the game, including tracking all island objects and detecting when they hit
-public class OhCoconutsGameManager {
+public class OhCoconutsGameManager implements Subject {
     private final Collection<IslandObject> allObjects = new LinkedList<>();
     private final Collection<HittableIslandObject> hittableIslandSubjects = new LinkedList<>();
     private final Collection<IslandObject> scheduledForRemoval = new LinkedList<>();
@@ -18,9 +21,10 @@ public class OhCoconutsGameManager {
     private Pane gamePane;
     private Crab theCrab;
     private Beach theBeach;
-    /* game play */
     private int coconutsInFlight = 0;
     private int gameTick = 0;
+
+    private final List<Observer> observers = new ArrayList<>();
 
     public OhCoconutsGameManager(int height, int width, Pane gamePane) {
         this.height = height;
@@ -75,25 +79,42 @@ public class OhCoconutsGameManager {
         theCrab = null;
     }
 
+    @Override
+    public void attach(Observer o) {
+        if (o != null && !observers.contains(o)) {
+            observers.add(o);
+        }
+    }
+
+    @Override
+    public void detach(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyAllObservers(HitEvent event) {
+        for (Observer obs : new ArrayList<>(observers)) {
+            obs.update(event);
+        }
+    }
+
     public void advanceOneTick() {
         for (IslandObject o : allObjects) {
             o.step();
             o.display();
         }
-        // see if objects hit; the hit itself is something you will add
-        // you can't change the lists while processing them, so collect
-        //   items to be removed in the first pass and remove them later
+
         scheduledForRemoval.clear();
         for (IslandObject thisObj : allObjects) {
             for (HittableIslandObject hittableObject : hittableIslandSubjects) {
                 if (thisObj.canHit(hittableObject) && thisObj.isTouching(hittableObject)) {
-                    // TODO: add code here to process the hit
                     scheduledForRemoval.add(hittableObject);
                     gamePane.getChildren().remove(hittableObject.getImageView());
+                    // TODO(yuktha): trigger notifyAllObservers for collision events here
                 }
             }
         }
-        // actually remove the objects as needed
+
         for (IslandObject thisObj : scheduledForRemoval) {
             allObjects.remove(thisObj);
             if (thisObj instanceof HittableIslandObject) {
