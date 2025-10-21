@@ -10,5 +10,7 @@ public class Beach extends IslandObject {
     }
 
     @Override
-    public void step() { /* do nothing */ }
+    public void step() {
+        /* do nothing */
+    }
 }

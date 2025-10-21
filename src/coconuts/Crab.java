@@ -23,4 +23,8 @@ public class Crab extends HittableIslandObject {
         x += offset;
         display();
     }
+
+    public boolean isCrab() {
+        return true;
+    }
 }

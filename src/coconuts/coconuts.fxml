@@ -20,6 +20,9 @@
         <VBox fx:id="skyAndSand" prefHeight="600.0" prefWidth="600.0">
             <children>
                 <Pane id="theGame" fx:id="gamePane" prefHeight="550.0" prefWidth="600.0"
+                      focusTraversable="true"
+                      onKeyPressed="#onKeyPressed"
+                      onKeyReleased="#onKeyReleased"
                       style="-fx-background-color: linear-gradient(to bottom right, derive(skyblue, 20%), derive(skyblue, -40%));">
                     <children>
                         <Label layoutX="50.0" layoutY="550.0" scaleZ="2.0" text="Press arrow keys to move coconut"

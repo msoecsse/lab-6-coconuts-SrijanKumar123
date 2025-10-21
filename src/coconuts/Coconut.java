@@ -16,4 +16,8 @@ public class Coconut extends HittableIslandObject {
     public void step() {
         y += 5;
     }
+
+    public boolean isCoconut() { return true; }
+
+
 }

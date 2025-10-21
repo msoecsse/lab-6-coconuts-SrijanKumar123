@@ -10,34 +10,16 @@ import java.util.LinkedList;
 //   to process that event
 // This is a domain class; do not introduce JavaFX or other GUI components here
 public class HitEvent {
-    private final IslandObject source;   // e.g., LaserBeam, Coconut
-    private final IslandObject target;   // e.g., Coconut, Crab, Beach
-    private final String eventType;      // "LASER_HIT", "COCONUT_HIT_BEACH", "CRAB_HIT", etc.
-
-    public HitEvent(IslandObject source, IslandObject target, String eventType) {
-        this.source = source;
-        this.target = target;
-        this.eventType = eventType;
+    private final HitEventType type;
+    private final IslandObject hitter;
+    private final IslandObject target;
+    public HitEvent(HitEventType type, IslandObject hitter, IslandObject target) {
+        this.type = type; this.hitter = hitter; this.target = target;
     }
-
-    public IslandObject getSource() {
-        return source;
-    }
-
-    public IslandObject getTarget() {
-        return target;
-    }
-
-    public String getEventType() {
-        return eventType;
-    }
-
-    @Override
-    public String toString() {
-        return "HitEvent{" + eventType + ", src=" + safeName(source) + ", tgt=" + safeName(target) + "}";
-    }
-
-    private String safeName(Object o) {
-        return (o == null) ? "null" : o.getClass().getSimpleName();
-    }
+    public HitEventType getType() { return type; }
+    public IslandObject getHitter() { return hitter; }
+    public IslandObject getTarget() { return target; }
 }
+
+
+
